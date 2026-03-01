@@ -1,14 +1,7 @@
 import numpy as np
 
 def european_call_option(S0, K, r, sigma, T, number_of_sims=200000, seed=24):
-    """
-    Monte Carlo price for a European call under risk-neutral GBM using the exact terminal distribution.
-
-    Returns:
-      - price: Monte Carlo estimate
-      - stderr: standard error of the discounted payoff estimator
-      - ci95: 95% confidence interval (approx)
-    """
+   
 
     rng = np.random.default_rng(seed)
 
