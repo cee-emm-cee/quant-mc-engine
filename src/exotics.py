@@ -49,9 +49,81 @@ def asian_call_fixed_strike(S0, K, r, sigma, T, n_steps=252, number_of_sims=2000
     ci95 = (price - 1.96 * stderr, price + 1.96 * stderr)
 
     return {"price": price, "stderr": stderr, "ci95": ci95}
+def up_and_out_call(S0, K, B, r, sigma, T, n_steps=252, number_of_sims=200000, seed=24):
+    """
+    Monte Carlo price for an up-and-out European call.
 
+    Parameters
+    ----------
+    S0 : float
+        Current stock price.
+    K : float
+        Strike price.
+    B : float
+        Barrier level (must be > S0).
+    r : float
+        Risk-free rate (annualized).
+    sigma : float
+        Volatility (annualized).
+    T : float
+        Time to maturity in years.
+    n_steps : int
+        Number of monitoring dates.
+    number_of_sims : int
+        Number of simulations.
+    seed : int
+        Random seed.
+
+    Returns
+    -------
+    dict
+        price, stderr, ci95, knockout_pct
+    """
+    rng = np.random.default_rng(seed)
+    dt = T / n_steps
+
+    S = np.full(number_of_sims, S0)
+    running_max = np.full(number_of_sims, S0)
+
+    for _ in range(n_steps):
+        Z = rng.standard_normal(number_of_sims)
+        S = S * np.exp((r - 0.5 * sigma**2) * dt + sigma * np.sqrt(dt) * Z)
+        running_max = np.maximum(running_max, S)
+
+    survived = running_max < B
+    payoffs = np.maximum(S - K, 0.0) * survived
+    discounted = np.exp(-r * T) * payoffs
+
+    knockout_pct = 1 - survived.mean()
+
+    price = discounted.mean()
+    stderr = discounted.std(ddof=1) / np.sqrt(number_of_sims)
+    ci95 = (price - 1.96 * stderr, price + 1.96 * stderr)
+
+    return {"price": price, "stderr": stderr, "ci95": ci95, "knockout_pct": knockout_pct}
 
 if __name__ == "__main__":
+    from black_scholes import black_scholes_call
+
+    S0 = 100.0
+    K = 100.0
+    r = 0.05
+    sigma = 0.2
+    T = 1.0
+
+    bs = black_scholes_call(S0, K, r, sigma, T)
+
+    print(f"BS European Call:              {bs:.6f}\n")
+
+    print("--- Asian Call ---")
+    asian = asian_call_fixed_strike(S0, K, r, sigma, T)
+    print(f"Price (252 steps):             {asian['price']:.6f}  (SE: {asian['stderr']:.6f})")
+    print(f"Asian < European:              {asian['price'] < bs}\n")
+
+    print("--- Up-and-Out Barrier Call ---")
+    for B in [110, 120, 130, 150, 200, 1000]:
+        uo = up_and_out_call(S0, K, B, r, sigma, T)
+        print(f"B={B:<6}  Price: {uo['price']:.6f}  KO%: {uo['knockout_pct']*100:.1f}%")
     from black_scholes import black_scholes_call
 
     S0 = 100.0
