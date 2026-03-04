@@ -4,31 +4,33 @@ A Monte Carlo pricing engine for vanilla and exotic derivatives, built from scra
 
 ## Repository Structure
 
-    quant-mc-engine/
-    ├── src/
-    │   ├── black_scholes.py        # Closed-form European call and put pricing
-    │   ├── monte_carlo.py          # Naive Monte Carlo pricer (risk-neutral GBM)
-    │   ├── variance_reduction.py   # Antithetic variates and control variate pricers
-    │   ├── exotics.py              # Arithmetic Asian call and up-and-out barrier call
-    │   ├── greeks.py               # Delta, Gamma, Vega, Theta, Rho via bump-and-reprice
-    │   ├── implied_vol.py          # Newton-Raphson implied volatility solver
-    │   └── heston.py               # Heston stochastic volatility Monte Carlo pricer
-    ├── tests/
-    │   ├── test_black_scholes.py
-    │   ├── test_variance_reduction.py
-    │   ├── test_exotics.py
-    │   ├── test_greeks.py
-    │   ├── test_implied_vol.py
-    │   └── test_heston.py
-    ├── notebooks/
-    │   ├── 01_convergence_analysis.ipynb
-    │   ├── 02_exotics_pricing.ipynb
-    │   ├── 03_greeks_surfaces.ipynb
-    │   ├── 04_implied_vol_surface.ipynb
-    │   └── 05_heston_model.ipynb
-    ├── figures/
-    ├── requirements.txt
-    └── README.md
+```
+quant-mc-engine/
+├── src/
+│   ├── black_scholes.py        # Closed-form European call and put pricing
+│   ├── monte_carlo.py          # Naive Monte Carlo pricer (risk-neutral GBM)
+│   ├── variance_reduction.py   # Antithetic variates and control variate pricers
+│   ├── exotics.py              # Arithmetic Asian call and up-and-out barrier call
+│   ├── greeks.py               # Delta, Gamma, Vega, Theta, Rho via bump-and-reprice
+│   ├── implied_vol.py          # Newton-Raphson implied volatility solver
+│   └── heston.py               # Heston stochastic volatility Monte Carlo pricer
+├── tests/
+│   ├── test_black_scholes.py
+│   ├── test_variance_reduction.py
+│   ├── test_exotics.py
+│   ├── test_greeks.py
+│   ├── test_implied_vol.py
+│   └── test_heston.py
+├── notebooks/
+│   ├── 01_convergence_analysis.ipynb
+│   ├── 02_exotics_pricing.ipynb
+│   ├── 03_greeks_surfaces.ipynb
+│   ├── 04_implied_vol_surface.ipynb
+│   └── 05_heston_model.ipynb
+├── figures/
+├── requirements.txt
+└── README.md
+```
 
 ## Features
 
@@ -70,30 +72,36 @@ Parameters: S0=100, K=100, r=0.05, sigma=0.2, T=1.0
 
 ## Installation
 
-    git clone https://github.com/cee-emm-cee/quant-mc-engine.git
-    cd quant-mc-engine
-    pip install -r requirements.txt
+```bash
+git clone https://github.com/cee-emm-cee/quant-mc-engine.git
+cd quant-mc-engine
+pip install -r requirements.txt
+```
 
 ## Usage
 
-    from src.black_scholes import black_scholes_call
-    from src.monte_carlo import european_call_option
-    from src.variance_reduction import control_variate_european_call
-    from src.greeks import delta, gamma, vega
+```python
+from src.black_scholes import black_scholes_call
+from src.monte_carlo import european_call_option
+from src.variance_reduction import control_variate_european_call
+from src.greeks import delta, gamma, vega
 
-    # Price a European call
-    bs_price = black_scholes_call(S0=100, K=100, r=0.05, sigma=0.2, T=1.0)
+# Price a European call
+bs_price = black_scholes_call(S0=100, K=100, r=0.05, sigma=0.2, T=1.0)
 
-    # Monte Carlo with control variates
-    mc_result = control_variate_european_call(S0=100, K=100, r=0.05, sigma=0.2, T=1.0)
+# Monte Carlo with control variates
+mc_result = control_variate_european_call(S0=100, K=100, r=0.05, sigma=0.2, T=1.0)
 
-    # Compute Delta using any pricer
-    from src.greeks import _bs_pricer
-    d = delta(_bs_pricer, S0=100, K=100, r=0.05, sigma=0.2, T=1.0)
+# Compute Delta using any pricer
+from src.greeks import _bs_pricer
+d = delta(_bs_pricer, S0=100, K=100, r=0.05, sigma=0.2, T=1.0)
+```
 
 ## Testing
 
-    python3 -m pytest tests/ -v
+```bash
+python3 -m pytest tests/ -v
+```
 
 38 tests covering put-call parity, convergence validation, variance reduction verification, Greeks accuracy against analytical solutions, implied vol round-trip recovery, and Heston model boundary conditions.
 
@@ -102,16 +110,20 @@ Parameters: S0=100, K=100, r=0.05, sigma=0.2, T=1.0
 ### Risk-Neutral Pricing
 All simulations use the risk-neutral measure where the stock evolves as:
 
-    dS = rS dt + sigma * S dW
+```
+dS = rS dt + sigma * S dW
+```
 
 The option price is the discounted expected payoff under this measure.
 
 ### Heston Stochastic Volatility
 The Heston model replaces constant volatility with a mean-reverting stochastic variance process:
 
-    dS = rS dt + sqrt(v) * S * dW_S
-    dv = kappa(theta - v) dt + xi * sqrt(v) * dW_v
-    Corr(dW_S, dW_v) = rho
+```
+dS = rS dt + sqrt(v) * S * dW_S
+dv = kappa(theta - v) dt + xi * sqrt(v) * dW_v
+Corr(dW_S, dW_v) = rho
+```
 
 Negative rho produces the left skew observed in equity implied volatility surfaces.
 
