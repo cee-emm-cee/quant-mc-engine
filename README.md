@@ -120,9 +120,13 @@ The option price is the discounted expected payoff under this measure.
 The Heston model replaces constant volatility with a mean-reverting stochastic variance process:
 
 ```
+
 dS = rS dt + sqrt(v) * S * dW_S
+
 dv = kappa(theta - v) dt + xi * sqrt(v) * dW_v
+
 Corr(dW_S, dW_v) = rho
+
 ```
 
 Negative rho produces the left skew observed in equity implied volatility surfaces.
