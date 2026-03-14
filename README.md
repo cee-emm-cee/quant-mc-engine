@@ -111,7 +111,7 @@ python3 -m pytest tests/ -v
 
 All simulations use the risk-neutral measure where the stock evolves as:
 
-$$dS = rS \; dt + \sigma S \; dW$$
+$$dS = rS \ dt + \sigma S \ dW$$
 
 The option price is the discounted expected payoff under this measure.
 
@@ -119,9 +119,9 @@ The option price is the discounted expected payoff under this measure.
 
 The Heston model replaces constant volatility with a mean-reverting stochastic variance process:
 
-$$dS = rS \; dt + \sqrt{v} \; S \; dW_S$$
+$$dS = rS \ dt + \sqrt{v} \ S \ dW_S$$
 
-$$dv = \kappa(\theta - v) \; dt + \xi \sqrt{v} \; dW_v$$
+$$dv = \kappa(\theta - v) \ dt + \xi \sqrt{v} \ dW_v$$
 
 $$\text{Corr}(dW_S, dW_v) = \rho$$
 
