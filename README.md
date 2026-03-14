@@ -121,11 +121,11 @@ The Heston model replaces constant volatility with a mean-reverting stochastic v
 
 ```
 
-dS = rS dt + sqrt(v) * S * dW_S
+$$dS = rS dt + sqrt(v) * S * dW_S$$
 
-dv = kappa(theta - v) dt + xi * sqrt(v) * dW_v
+$$dv = kappa(theta - v) dt + xi * sqrt(v) * dW_v$$
 
-Corr(dW_S, dW_v) = rho
+$$Corr(dW_S, dW_v) = rho$$
 
 ```
 
