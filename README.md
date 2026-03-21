@@ -5,6 +5,7 @@ A Monte Carlo pricing engine for vanilla and exotic derivatives, built from scra
 ## Repository Structure
 
 ```
+
 quant-mc-engine/
 ├── src/
 │   ├── black_scholes.py        # Closed-form European call and put pricing
