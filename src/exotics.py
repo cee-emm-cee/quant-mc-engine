@@ -49,6 +49,8 @@ def asian_call_fixed_strike(S0, K, r, sigma, T, n_steps=252, number_of_sims=2000
     ci95 = (price - 1.96 * stderr, price + 1.96 * stderr)
 
     return {"price": price, "stderr": stderr, "ci95": ci95}
+
+
 def up_and_out_call(S0, K, B, r, sigma, T, n_steps=252, number_of_sims=200000, seed=24):
     """
     Monte Carlo price for an up-and-out European call.
@@ -124,20 +126,3 @@ if __name__ == "__main__":
     for B in [110, 120, 130, 150, 200, 1000]:
         uo = up_and_out_call(S0, K, B, r, sigma, T)
         print(f"B={B:<6}  Price: {uo['price']:.6f}  KO%: {uo['knockout_pct']*100:.1f}%")
-    from black_scholes import black_scholes_call
-
-    S0 = 100.0
-    K = 100.0
-    r = 0.05
-    sigma = 0.2
-    T = 1.0
-
-    bs = black_scholes_call(S0, K, r, sigma, T)
-    asian = asian_call_fixed_strike(S0, K, r, sigma, T)
-    asian_1 = asian_call_fixed_strike(S0, K, r, sigma, T, n_steps=1)
-
-    print(f"BS European Call:          {bs:.6f}")
-    print(f"Asian Call (252 steps):     {asian['price']:.6f}  (SE: {asian['stderr']:.6f})")
-    print(f"Asian Call (1 step):        {asian_1['price']:.6f}  (SE: {asian_1['stderr']:.6f})")
-    print(f"Asian < European:           {asian['price'] < bs}")
-    print(f"Asian(1 step) ~ European:   {abs(asian_1['price'] - bs) < 3 * asian_1['stderr']}")
