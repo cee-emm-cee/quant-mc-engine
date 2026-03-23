@@ -1,8 +1,31 @@
 import numpy as np
 
 def european_call_option(S0, K, r, sigma, T, number_of_sims=200000, seed=24):
-   
+    """
+    Monte Carlo price for a European call under risk-neutral GBM.
 
+    Parameters
+    ----------
+    S0 : float
+        Current stock price.
+    K : float
+        Strike price.
+    r : float
+        Risk-free rate (annualized).
+    sigma : float
+        Volatility (annualized).
+    T : float
+        Time to maturity in years.
+    number_of_sims : int
+        Number of simulations.
+    seed : int
+        Random seed.
+
+    Returns
+    -------
+    dict
+        price, stderr, ci95
+    """
     rng = np.random.default_rng(seed)
 
     Z = rng.standard_normal(number_of_sims)

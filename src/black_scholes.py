@@ -76,5 +76,3 @@ if __name__ == "__main__":
     print(f"Put-Call Parity LHS (C - P):       {parity_lhs:.10f}")
     print(f"Put-Call Parity RHS (S0 - Ke^-rT): {parity_rhs:.10f}")
     print(f"Parity Error: {abs(parity_lhs - parity_rhs):.2e}")
-
-    
