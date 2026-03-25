@@ -60,6 +60,8 @@ def rho(pricer, S0, K, r, sigma, T, h=None, **kwargs):
     price_up = pricer(S0, K, r + h, sigma, T, **kwargs)['price']
     price_down = pricer(S0, K, r - h, sigma, T, **kwargs)['price']
     return (price_up - price_down) / (2 * h)
+
+
 def _bs_pricer(S0, K, r, sigma, T, **kwargs):
     """Wrapper to make BS compatible with Greek functions."""
     from black_scholes import black_scholes_call
