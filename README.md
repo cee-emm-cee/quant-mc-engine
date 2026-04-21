@@ -1,6 +1,6 @@
 # Quant Monte Carlo Engine
 
-A Monte Carlo pricing engine for vanilla and exotic derivatives, built from scratch in Python. Includes variance reduction methods, Greeks computation, implied volatility surface construction, and stochastic volatility modeling via the Heston model.
+A Monte Carlo pricing engine for vanilla and exotic derivatives, built from scratch in Python. Includes variance reduction methods, Greeks computation, implied volatility surface construction, and stochastic volatility modelling via the Heston model.
 
 ## Repository Structure
 
